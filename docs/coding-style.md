@@ -1,42 +1,53 @@
+---
+layout: default
+title: Coding Style
+nav_order: 3
+---
 
-                OpenSSL coding style
-		Jan 12 2015
+# OpenSSL Coding Style
+{: .no_toc }
+
+**January 12 2015**
 
 This document describes the coding style for the OpenSSL project. It is
-derived from the Linux kernel coding style, which can be found at:
-
-    https://www.kernel.org/doc/Documentation/CodingStyle
-
+derived from the Linux kernel [coding style][linux-coding-style].
 This guide is not distributed as part of OpenSSL itself. Since it is
-derived from the Linux Kernel Coding Style, it is distributed under the
-terms of the kernel license, available here:
-
-    https://www.kernel.org/pub/linux/kernel/COPYING
+derived from the Linux kernel coding style, it is distributed under the
+terms of the kernel [license][linux-kernel-license].
 
 Coding style is all about readability and maintainability using commonly
 available tools. OpenSSL coding style is simple. Avoid tricky expressions.
 
+[linux-coding-style]: https://www.kernel.org/doc/Documentation/CodingStyle
+[linux-kernel-license]: https://www.kernel.org/pub/linux/kernel/COPYING
 
-                Chapter 1: Indentation
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+## Indentation
 
 Indentation is four space characters. Do not use the tab character.
 
 Pre-processor directives use one space for indents:
-
+```
     #if
     # define
     #else
     # define
     #endif
+```
 
 
-                Chapter 2: Breaking long lines and strings
+## Breaking long lines and strings
 
 Don't put multiple statements, or assignments, on a single line.
-
+```
     if (condition) do_this();
     do_something_everytime();
-
+```
 The limit on the length of lines is 80 columns. Statements longer
 than 80 columns must be broken into sensible chunks, unless exceeding
 80 columns significantly increases readability and does not hide
@@ -46,21 +57,21 @@ headers with a long argument list. Never break user-visible strings,
 however, because that breaks the ability to grep for them.
 
 
-                Chapter 3: Placing Braces and Spaces
+## Placing Braces and Spaces
 
 The other issue that always comes up in C styling is the placement
 of braces. Unlike the indent size, there are few technical reasons to
 choose one placement strategy over the other, but the preferred way,
 following Kernighan and Ritchie, is to put the opening brace last on the
 line, and the closing brace first:
-
+```
     if (x is true) {
         we do y
     }
-
+```
 This applies to all non-function statement blocks (if, switch, for,
 while, do):
-
+```
     switch (suffix) {
     case 'G':
     case 'g':
@@ -77,29 +88,29 @@ while, do):
     default:
         break;
     }
-
+```
 Note, from the above example, that the way to indent a switch statement
 is to align the switch and its subordinate case labels in the same column
 instead of "double-indenting" the case bodies.
 
 There is one special case, however. Functions have the
 opening brace at the beginning of the next line:
-
+```
     int function(int x)
     {
         body of function
     }
-
+```
 Note that the closing brace is empty on a line of its own, EXCEPT in the
 cases where it is followed by a continuation of the same statement, such
-as a "while" in a do-statement or an "else" in an if-statement, like this:
-
+as a while in a do-statement or an else in an if-statement, like this:
+```
     do {
         ...
     } while (condition);
-
+```
 and
-
+```
     if (x == y) {
         ...
     } else if (x > y) {
@@ -107,36 +118,36 @@ and
     } else {
         ...
     }
-
+```
 In addition to being consistent with K&R, note that that this brace-placement
 also minimizes the number of empty (or almost empty) lines. Since the
 supply of new-lines on your screen is not a renewable resource (think
 25-line terminal screens here), you have more empty lines to put comments on.
 
 Do not unnecessarily use braces around a single statement:
-
+```
     if (condition)
         action();
-
+```
 and
-
+```
     if (condition)
         do_this();
     else
         do_that();
-
+```
 If one of the branches is a compound statement, then use braces on both parts:
-
+```
     if (condition) {
         do_this();
         do_that();
     } else {
         otherwise();
     }
-
+```
 Nested compound statements should often have braces for clarity, particularly
 to avoid the dangling-else problem:
-
+```
     if (condition) {
         do_this();
         if (anothertest)
@@ -144,55 +155,56 @@ to avoid the dangling-else problem:
     } else {
         otherwise();
     }
+```
 
 
-                Chapter 3.1:  Spaces
+## Spaces
 
 OpenSSL style for use of spaces depends (mostly) on whether the name is
 a function or keyword. Use a space after most keywords:
-
+```
     if, switch, case, for, do, while, return
-
+```
 Do not use a space after sizeof, typeof, alignof, or __attribute__.
 They look somewhat like functions and should have parentheses
 in OpenSSL, although they are not required by the language. For sizeof,
 use a variable when at all possible, to ensure that type changes are
 properly reflected:
-
+```
     SOMETYPE *p = OPENSSL_malloc(sizeof(*p) * num_of_elements);
-
-
+```
 Do not add spaces around the inside of parenthesized expressions.
 This example is wrong:
-
+```
     s = sizeof( struct file );
-
+```
 When declaring pointer data or a function that returns a pointer type,
 the asterisk goes next to the data or function name, and not the type:
-
+```
     char *openssl_banner;
     unsigned long long memparse(char *ptr, char **retptr);
     char *match_strdup(substring_t *s);
-
+```
 Use one space on either side of binary and ternary operators,
 such as this partial list:
-
+```
     =  +  -  <  >  *  /  %  |  &  ^  <=  >=  ==  !=  ?  : +=
-
+```
 Do not put a space after unary operators:
-
+```
     &  *  +  -  ~  !  defined
-
+```
 Do not put a space before the postfix increment and decrement unary
 operators or after the prefix increment and decrement unary operators:
-
+```
     foo++
     --bar
-
-Do not put a space around the '.' and "->" structure member operators:
+```
+Do not put a space around the . and -> structure member operators:
+```
     foo.bar
     foo->bar
-
+```
 Do not leave trailing whitespace at the ends of lines. Some editors with
 "smart" indentation will insert whitespace at the beginning of new lines
 as appropriate, so you can start typing the next line of code right away.
@@ -205,7 +217,7 @@ a series of patches, this may make later patches in the series fail by
 changing their context lines.
 
 
-                Chapter 4: Naming
+## Naming
 
 C is a Spartan language, and so should your naming be. Do not use long
 names like ThisVariableIsATemporaryCounter. Use a name like tmp, which
@@ -230,13 +242,13 @@ If you are afraid that someone might mix up your local variable names,
 perhaps the function is too long; see Chapter 6.
 
 
-                Chapter 5: Typedefs
+## Typedefs
 
 OpenSSL uses typedef's extensively. For structures, they are all uppercase
 and are usually declared like this:
-
+```
     typedef struct name_st NAME;
-
+```
 For examples, look in ossl_type.h, but note that there are many exceptions
 such as BN_CTX. Typedef'd enum is used much less often and there is no
 convention, so consider not using a typedef. When doing that, the enum
@@ -262,7 +274,7 @@ be opaque and only expose pointers in the API. The actual struct definition
 should be defined in a local header file that is not exported.
 
 
-                Chapter 6: Functions
+## Functions
 
 Ideally, functions should be short and sweet, and do just one thing.
 A rule of thumb is that they should fit on one or two screenfuls of text
@@ -296,21 +308,21 @@ The name in the prototype declaration should match the name in the function
 definition.
 
 
-                Chapter 7: Centralized exiting of functions
+## Centralized exiting of functions
 
 The goto statement comes in handy when a function exits from multiple
 locations and some common work such as cleanup has to be done. If there
 is no cleanup needed then just return directly. The rationale for this is
 as follows:
 
-    - Unconditional statements are easier to understand and follow
-    - It can reduce excessive control structures and nesting
-    - It avoids errors caused by failing to updated multiple exit points
-      when the code is modified
-    - It saves the compiler work to optimize redundant code away ;)
+ - Unconditional statements are easier to understand and follow
+ - It can reduce excessive control structures and nesting
+ - It avoids errors caused by failing to updated multiple exit points
+   when the code is modified
+ - It saves the compiler work to optimize redundant code away ;)
 
 For example:
-
+```
     int fun(int a)
     {
         int result = 0;
@@ -331,10 +343,12 @@ For example:
         OPENSSL_free(buffer);
         return result;
     }
+```
 
-                Chapter 8: Commenting
 
-Use the classic "/* ... */" comment markers.  Don't use "// ..." markers.
+## Commenting
+
+Use the classic '/* ... */' comment markers.  Don't use '// ...' markers.
 
 Comments are good, but there is also a danger of over-commenting. NEVER try
 to explain HOW your code works in a comment. It is much better to write
@@ -342,7 +356,7 @@ the code so that it is obvious, and it's a waste of time to explain badly
 written code. You want your comments to tell WHAT your code does, not HOW.
 
 The preferred style for long (multi-line) comments is:
-
+```
     /*-
      * This is the preferred style for multi-line
      * comments in the OpenSSL source code.
@@ -351,7 +365,7 @@ The preferred style for long (multi-line) comments is:
      * Description:  A column of asterisks on the left side,
      * with beginning and ending almost-blank lines.
      */
-
+```
 Note the initial hyphen to prevent indent from modifying the comment.
 Use this if the comment has particular formatting that must be preserved.
 
@@ -361,21 +375,12 @@ commas for multiple data declarations). This leaves you room for a small
 comment on each item, explaining its use.
 
 
-                Chapter 9: Deleted
-
-
-                Chapter 10: Deleted
-
-
-                Chapter 11: Deleted
-
-
-                Chapter 12: Macros and Enums
+## Macros and Enums
 
 Names of macros defining constants and labels in enums are in uppercase:
-
+```
     #define CONSTANT 0x12345
-
+```
 Enums are preferred when defining several related constants.
 
 Macro names should be in uppercase, but macros resembling functions may
@@ -383,75 +388,69 @@ be written in lower case. Generally, inline functions are preferable to
 macros resembling functions.
 
 Macros with multiple statements should be enclosed in a do - while block:
-
+```
     #define macrofun(a, b, c)   \
         do {                    \
             if (a == 5)         \
                 do_this(b, c);  \
         } while (0)
-
+```
 Do not write macros that affect control flow:
-
+```
     #define FOO(x)                 \
         do {                       \
             if (blah(x) < 0)       \
                 return -EBUGGERED; \
         } while(0)
-
+```
 Do not write macros that depend on having a local variable with a magic name:
-
+```
     #define FOO(val) bar(index, val)
-
+```
 It is confusing to the reader and is prone to breakage from seemingly
 innocent changes.
 
 Do not write macros that are l-values:
-
+```
     FOO(x) = y
-
+```
 This will cause problems if, e.g., FOO becomes an inline function.
 
 Be careful of precedence. Macros defining constants using expressions
 must enclose the expression in parentheses:
-
+```
     #define CONSTANT 0x4000
     #define CONSTEXP (CONSTANT | 3)
-
+```
 Beware of similar issues with macros using parameters. The GNU cpp manual
 deals with macros exhaustively.
 
 
-                Chapter 13: Deleted
-
-
-                Chapter 14: Allocating memory
+## Allocating memory
 
 OpenSSL provides the following general purpose memory allocators:
 OPENSSL_malloc(), OPENSSL_realloc(), OPENSSL_strdup() and OPENSSL_free().
 Please refer to the API documentation for further information about them.
 
 
-                Chapter 15: Deleted
-
-
-                Chapter 16: Function return values and names
+## Function return values and names
 
 Functions can return values of many different kinds, and one of the
 most common is a value indicating whether the function succeeded or
 failed. Usually this is:
-
+```
     1: success
     0: failure
-
+```
 Sometimes an additional value is used:
-
+```
     -1: something bad (e.g., internal error or memory allocation failure)
-
+```
 Other APIs use the following pattern:
-
+```
     >= 1: success, with value returning additional information
     <= 0: failure with return value indicating why things failed
-
+```
 Sometimes a return value of -1 can mean "should retry" (e.g., BIO, SSL, et al).
 
 Functions whose return value is the actual result of a computation,
@@ -461,29 +460,26 @@ out-of-range result. The simplest example is functions that return pointers;
 they return NULL to report failure.
 
 
-                Chapter 17:  Deleted
-
-
-                Chapter 18:  Editor modelines
+## Editor modelines
 
 Some editors can interpret configuration information embedded in source
 files, indicated with special markers. For example, emacs interprets
 lines marked like this:
-
+```
     -*- mode: c -*-
-
+```
 Or like this:
-
+```
     /*
     Local Variables:
     compile-command: "gcc -DMAGIC_DEBUG_FLAG foo.c"
     End:
     */
-
+```
 Vim interprets markers that look like this:
-
+```
     /* vim:set sw=8 noet */
-
+```
 Do not include any of these in source files. People have their own personal
 editor configurations, and your source files should not override them.
 This includes markers for indentation and mode configuration. People may
@@ -491,7 +487,7 @@ use their own custom mode, or may have some other magic method for making
 indentation work correctly.
 
 
-                Chapter 19:  Processor-specific code
+## Processor-specific code
 
 In OpenSSL's case the only reason to resort to processor-specific code
 is for performance. As it still exists in a general platform-independent
@@ -510,11 +506,11 @@ When writing a single inline assembly statement containing multiple
 instructions, put each instruction on a separate line in a separate quoted
 string, and end each string except the last with \n\t to properly indent
 the next instruction in the assembly output:
-
+```
         asm ("magic %reg1, #42\n\t"
              "more_magic %reg2, %reg3"
              : /* outputs */ : /* inputs */ : /* clobbers */);
-
+```
 Large, non-trivial assembly functions go in pure assembly modules, with
 corresponding C prototypes defined in C. The preferred way to implement this
 is so-called "perlasm": instead of writing real .s file, you write a perl
@@ -532,7 +528,7 @@ same performance guarantee across different micro-architecture. Nor is
 it portable enough to meet our multi-platform support goals.
 
 
-                Chapter 20:  Portability
+## Portability
 
 To maximise portability the version of C defined in ISO/IEC 9899:1990
 should be used. This is more commonly referred to as C90. ISO/IEC 9899:1999
@@ -540,36 +536,38 @@ should be used. This is more commonly referred to as C90. ISO/IEC 9899:1999
 used on and therefore should be avoided.
 
 
-                Chapter 21: Miscellaneous
+## Miscellaneous
 
 Do not use ! to check if a pointer is NULL, or to see if a str...cmp
 function found a match.  For example, these are wrong:
-
+```
     if (!(p = BN_new())) ...
     if (!strcmp(a, "FOO")) ...
-
+```
 Do this instead:
-
-    if ((p = BN_new()) == NULL)...
+```
+    if ((p = BN_new()) == NULL) ...
     if (strcmp(a, "FOO") == 0) ...
+```
 
-
-                Appendix A: References
+## References
 
 The C Programming Language, Second Edition
 by Brian W. Kernighan and Dennis M. Ritchie.
 Prentice Hall, Inc., 1988.
 ISBN 0-13-110362-8 (paperback), 0-13-110370-9 (hardback).
-URL: http://cm.bell-labs.com/cm/cs/cbook/
+[http://cm.bell-labs.com/cm/cs/cbook](http://cm.bell-labs.com/cm/cs/cbook)
 
 The Practice of Programming
 by Brian W. Kernighan and Rob Pike.
 Addison-Wesley, Inc., 1999.
 ISBN 0-201-61586-X.
-URL: http://cm.bell-labs.com/cm/cs/tpop/
+[http://cm.bell-labs.com/cm/cs/tpop](http://cm.bell-labs.com/cm/cs/tpop)
 
 GNU manuals - where in compliance with K&R and this text - for cpp, gcc,
-gcc internals and indent, all available from https://www.gnu.org/manual/
+gcc internals and indent, all available from
+[https://www.gnu.org/manual](https://www.gnu.org/manual)
 
 WG14 is the international standardization working group for the programming
-language C, URL: http://www.open-std.org/JTC1/SC22/WG14/
+language C
+[http://www.open-std.org/JTC1/SC22/WG14](http://www.open-std.org/JTC1/SC22/WG14)
