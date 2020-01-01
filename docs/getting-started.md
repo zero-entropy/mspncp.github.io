@@ -28,13 +28,15 @@ If you never used Git version control system before, take a look at the excellen
 
 You need two repositories, a public fork on GitHub, and a local working copy.
 
+![repositories](/assets/images/repositories.svg)
 
-| Repository                | Name     |  URL/Location                            |
-|:--------------------------|:---------|:-----------------------------------------|
-| Main OpenSSL repository   | openssl  |  git://git.openssl.org/openssl.git       |
-| Official GitHub mirror    | github   |  https://github.com/openssl/openssl.git  |
-| Your GitHub fork          | origin   |  https://github.com/yourname/openssl.git |
-| Your local working copy   |          |  ~/src/openssl                           |
+
+| Repository                     | Name    |  URL/Location                            |
+|:-------------------------------|:--------|:-----------------------------------------|
+| 1: OpenSSL project repository  | project |  git://git.openssl.org/openssl.git       |
+| 2: OpenSSL GitHub mirror       | github  |  https://github.com/openssl/openssl.git  |
+| 3: Your OpenSSL GitHub fork    | origin  |  https://github.com/yourname/openssl.git |
+| 4: Your local working copy     |         |  ~/src/openssl                           |
 
 The main OpenSSL repository is mentioned here only for completeness. As a normal contributor, you will not need to add it as a remote repository. Only for committers this repository will be of importance.
 
