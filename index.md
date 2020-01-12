@@ -12,7 +12,7 @@ This site here is focused on the OpenSSL development process on GitHub.
 If you are looking for the official OpenSSL website, please visit
 [www.openssl.org](https://www.openssl.org).
 
-_Note: this site is under construction. Don't expect too much useful yet._
+_Note: this site is under construction and does not represent an official OpenSSL site yet._
 
 ## About the project
 
